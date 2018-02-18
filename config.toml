@@ -34,7 +34,7 @@ paginate = 20
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 2
     identifier = "post"
-    url = "/posts/"
+    url = "/post/"
   [[menu.main]]
     name = "About"
     pre = "<i class='fa fa-user fa-fw'></i>"
@@ -50,9 +50,9 @@ paginate = 20
 [social]
   # Link your social networking accouns to the side menu
   # by entering your username or ID.
-  twitter = "ashishna"
+  twitter = "thedevhaus"
   #facebook = "*"
-  instagram = "ashishnayyar"
-  github = "ashishna"
+  instagram = "thedevhaus"
+  #github = "ashishna"
   #stackoverflow = "*"
   linkedin = "ashishnayyar10"

@@ -1,10 +1,10 @@
 ---
 title: "Init Java Groovy Project Thru Gradle"
 date: 2018-02-02T13:46:51+11:00
-draft: true
+draft: false
 weight: 10
 #topics: ["Build Tools"]
-description: "Basic Tutorial"
+#description: "Basic Tutorial"
 tags : ["java", "groovy", "gradle"]
 ---
 

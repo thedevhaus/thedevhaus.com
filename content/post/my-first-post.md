@@ -4,20 +4,26 @@ date: 2018-02-10
 linktitle: Configure SSL in Wiremock 
 title: How to use Wiremock with HTTPS
 weight: 10
+tags : ["java", "groovy", "keytool","ssl"]
 ---
+# Introduction
 
+Wiremock is an awesome HTTP stubbing library which can be used to mock end points. It is super simple and can be used as a standalone server. The beauty is that it can be used to stub SSL endpoints making it very versatile and easier to use.
 
-## Introduction
-
-Wiremock is an awesome HTTP stubbing librabry which can be ued to mock end points. It is super simple and can be used as a standalone server. The beauty is that it can be used to stub SSL endpoints making it very versatile and easier to use.
+Wiremock although ships with default keystore but it is issues to the creator. If you really want a full fledged SSL then it is a good idea to create the new keystore and use it.
 
 ## Step 1 - Generate a self signed certificate
-```
+
+The password for the keystore must be **password** as per Wiremock's documentation.
+
+```bash
 keytool.exe -genkey -alias wiremock -keyalg RSA -keysize 1024  -validity 365 -keypass password  -keystore wiremockKS.jks -storepass password
 ```
-This will create a file named ```wiremockKS.jks``` with a self signed certificate. Add the correct hostname for certificate to be uesd on host. For Ex the following certificate can be used for ```localhost``` : 
 
-```
+This will create a file named ```wiremockKS.jks``` with a self signed certificate. Add the correct hostname for certificate to be uesd on host. For Ex the following certificate can be used for ```localhost``` :
+
+```plain
+
 What is your first and last name?
   [Unknown]:  localhost
 What is the name of your organizational unit?
@@ -33,18 +39,20 @@ What is the two-letter country code for this unit?
 Is CN=localhost, OU=some unit, O=awesome org, L=mel, ST=VIC, C=AU correct?
   [no]:  yes
 ```
+
 ## Step 2 -  Export the certificate (later to be imported in Java's default key store)
 
-```
+```bash
 keytool -export -keystore wiremockKS.jks -alias wiremock -file wiremock-pub.cer
 ```
 
 ## Step 3 - Import public key in Java's default truststore 
 
-```
+```bash
 keytool -import -file wiremock-pub.cer -alias wiremock -keystore  %JAVA_HOME%\jre\lib\security\cacerts
-``` 
 ```
+
+```plain
 Enter keystore password:
 Owner: CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=AU
 Issuer: CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=AU
@@ -75,13 +83,15 @@ Default password for java's keystore is **changeit**
 
 ## Step 5 Start wiremock with the newly generated keystore in Step 1
 
-```
+```bash
 java -jar wiremock-standalone-2.6.0.jar --https-port 9099 -v --https-keystore .\wiremockKS.jks
 ```
+
 ## Step 6 - Test with a client
 
 I tested with quick and dirty Groovy script and voila..got the response
-```
+
+```java
 String postResult
 ((HttpURLConnection)new URL('https://localhost:9099/test').openConnection()).with {
     requestMethod = 'POST'
